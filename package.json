@@ -1,0 +1,17 @@
+{
+  "name": "saucedemo-playwright-ts",
+  "version": "1.0.0",
+  "description": "E2E Automation Framework for SauceDemo using Playwright + TypeScript with POM design pattern",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:report": "npx playwright show-report",
+    "test:checkout": "npx playwright test tests/checkout.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
