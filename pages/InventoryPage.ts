@@ -41,25 +41,15 @@ export class InventoryPage {
   }
 
   // ─── Product actions ──────────────────────────────────────────────────────
-
-private readonly productDataTestIds: Record<string, string> = {
-  'Sauce Labs Backpack':               'add-to-cart-sauce-labs-backpack',
-  'Sauce Labs Bike Light':             'add-to-cart-sauce-labs-bike-light',
-  'Sauce Labs Bolt T-Shirt':           'add-to-cart-sauce-labs-bolt-t-shirt',
-  'Sauce Labs Fleece Jacket':          'add-to-cart-sauce-labs-fleece-jacket',
-  'Sauce Labs Onesie':                 'add-to-cart-sauce-labs-onesie',
-  'Test.allTheThings() T-Shirt (Red)': 'add-to-cart-test.allthethings()-t-shirt-(red)',
-};
+private getAddToCartId(productName: string): string {
+  return 'add-to-cart-' + productName
+    .toLowerCase()
+    .replace(/\s+/g, '-')      // spaces → hyphens
+    .replace(/[^a-z0-9().'-]/g, ''); // remove special chars except allowed ones
+}
 
 async addProductToCartByName(productName: string) {
-  const dataTestId = this.productDataTestIds[productName];
-
-  if (!dataTestId) {
-    throw new Error(
-      `Unknown product: "${productName}". Add it to productDataTestIds in InventoryPage.ts`
-    );
-  }
-
+  const dataTestId = this.getAddToCartId(productName);
   const addButton = this.page.locator(`[data-test="${dataTestId}"]`);
   await expect(addButton).toBeVisible();
   await addButton.click();
