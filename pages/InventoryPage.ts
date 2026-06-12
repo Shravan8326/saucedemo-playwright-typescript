@@ -74,7 +74,13 @@ async addProductToCartByName(productName: string) {
   async goToCart() {
     await this.cartIcon.click();
   }
-async sortProducts(option: string) {
+
+  async logout() {
+    await this.hamburgerMenu.click();
+    await this.page.locator('#logout_sidebar_link').click();
+  }
+
+  async sortProducts(option: string) {
   await this.sortDropdown.selectOption(option);
 }
 
