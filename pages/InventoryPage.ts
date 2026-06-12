@@ -74,4 +74,25 @@ async addProductToCartByName(productName: string) {
   async goToCart() {
     await this.cartIcon.click();
   }
+async sortProducts(option: string) {
+  await this.sortDropdown.selectOption(option);
+}
+
+async getAllProductNames(): Promise<string[]> {
+  const nameElements = await this.page.locator('.inventory_item_name').all();
+  const names = await Promise.all(nameElements.map(el => el.innerText()));
+  return names;
+}
+
+async getAllProductPrices(): Promise<number[]> {
+  const priceElements = await this.page.locator('.inventory_item_price').all();
+  const prices = await Promise.all(
+    priceElements.map(async el => {
+      const text = await el.innerText();
+      // strip $ and convert to number e.g. "$29.99" → 29.99
+      return parseFloat(text.replace('$', ''));
+    })
+  );
+  return prices;
+}
 }
