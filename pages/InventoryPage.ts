@@ -95,4 +95,9 @@ async getAllProductPrices(): Promise<number[]> {
   );
   return prices;
 }
+  async addMultipleProductsToCart(productNames: string[]) {
+    for (const name of productNames) {
+      await this.addProductToCartByName(name);
+    }
+  }
 }
