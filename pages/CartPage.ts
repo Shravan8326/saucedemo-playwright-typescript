@@ -33,4 +33,22 @@ export class CartPage {
   async proceedToCheckout() {
     await this.checkoutButton.click();
   }
+  async removeProductByName(productName: string) {
+    const removeButton = this.page.locator('.cart_item')
+      .filter({ hasText: productName })
+      .locator('[data-test^="remove"]');
+    await expect(removeButton).toBeVisible();
+    await removeButton.click();
+  }
+  
+  async verifyCartIsEmpty() {
+    await expect(this.cartItems).toHaveCount(0);
+    await expect(this.page.locator('.cart_item')).toHaveCount(0);
+  }
+  
+  async verifyCartBadgeNotVisible() {
+    await expect(
+      this.page.locator('[data-test="shopping-cart-badge"]')
+    ).not.toBeVisible();
+  }
 }
