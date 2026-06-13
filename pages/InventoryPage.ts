@@ -106,4 +106,62 @@ async getAllProductPrices(): Promise<number[]> {
       await this.addProductToCartByName(name);
     }
   }
+
+  // ─── Hamburger menu actions ───────────────────────────────────────────────
+
+  async openHamburgerMenu() {
+    await this.hamburgerMenu.click();
+    await expect(this.page.locator('.bm-menu-wrap')).toBeVisible();
+  }
+
+  async clickAllItems() {
+    await this.openHamburgerMenu();
+    await this.page.locator('#inventory_sidebar_link').click();
+  }
+
+  async clickResetAppState() {
+    await this.openHamburgerMenu();
+    await this.page.locator('#reset_sidebar_link').click();
+    await this.page.locator('#react-burger-cross-btn').click();
+  }
+
+  // ─── Product detail navigation ────────────────────────────────────────────
+
+  async captureFirstProductDetails() {
+    return {
+      name:  await this.page.locator('.inventory_item_name').first().innerText(),
+      desc:  await this.page.locator('.inventory_item_desc').first().innerText(),
+      price: await this.page.locator('.inventory_item_price').first().innerText(),
+    };
+  }
+
+  async clickFirstProductName() {
+    await this.page.locator('.inventory_item_name').first().click();
+  }
+
+  async clickFirstProductImage() {
+    await this.page.locator('.inventory_item_img img').first().click();
+  }
+
+  // ─── Reset verification ───────────────────────────────────────────────────
+
+  async verifyCartBadgeNotVisible() {
+    await expect(this.cartBadge).not.toBeVisible();
+  }
+
+  async verifyAllAddToCartButtonsVisible() {
+    const addButtons = this.page.locator('[data-test^="add-to-cart"]');
+    const count = await addButtons.count();
+    for (let i = 0; i < count; i++) {
+      await expect(addButtons.nth(i)).toBeVisible();
+    }
+  }
+
+  async getFirstProductName(): Promise<string> {
+    return await this.page.locator('.inventory_item_name').first().innerText();
+  }
+
+  async getFirstProductPrice(): Promise<string> {
+    return await this.page.locator('.inventory_item_price').first().innerText();
+  }
 }
